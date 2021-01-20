@@ -1,13 +1,10 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, {Component, useState} from 'react';
+import { StyleSheet, Text, View, TextInput} from 'react-native';
+import Navigator from './routes/homeStack';
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>New project</Text>
-      <StatusBar style="auto" />
-    </View>
+      <Navigator />
   );
 }
 
