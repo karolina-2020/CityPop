@@ -1,12 +1,15 @@
 import React, {Component, useState} from 'react';
-import { StyleSheet, Text, View, TextInput} from 'react-native';
+import { render } from 'react-dom';
+import { StyleSheet, Image} from 'react-native';
 import Navigator from './routes/homeStack';
 
 export default function App() {
+
   return (
       <Navigator />
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {

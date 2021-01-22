@@ -1,5 +1,5 @@
 import React, {Component, useState} from 'react';
-import { StyleSheet, Text, View, TextInput, Button, button } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Image} from 'react-native';
 
 export default class City extends Component{
 
@@ -15,9 +15,9 @@ export default class City extends Component{
 
     /*****
      * TOD0:
-     * Add error handling
-     * add icon
-     * */
+     *  make first letter capitalized
+     * error handling for example if no input
+     *****/
 
     async searchForCity()
     {
@@ -32,6 +32,11 @@ export default class City extends Component{
     render() {
     return (
     <View style={styles.container}>
+
+      <Image
+        source = {require ('../assets/globe.jpeg')}
+        style={{width: 100, height: 100}}
+      />
      <Text style = {customTextProps.style}>SEARCH BY CITY</Text>
     <TextInput 
       style = {styles.input} 
