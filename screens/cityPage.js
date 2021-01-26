@@ -8,6 +8,7 @@ export default class City extends Component{
      
         this.state = {
           city: null,
+          population: null
         };
       }
 
@@ -24,8 +25,16 @@ export default class City extends Component{
         const url = "http://api.geonames.org/searchJSON?&username=weknowit&q=" + this.city
         const response = await fetch (url);
         const data = await response.json();
-          console.log(data.geonames[0].population);
-          alert(this.city.toLocaleUpperCase() + "\n"+  "POPULATION"  + "\n"+ data.geonames[0].population)
+        console.log(data.geonames.population);
+          this.population = data.geonames[0].population
+     
+            const { navigate } = this.props.navigation;
+            //this.props.navigation.navigate('populationPage', {city: this.city, population: this.population});
+           navigate('populationPage', {
+              city: this.city,
+              population: this.population
+            })
+    
          
     }
   
@@ -49,13 +58,13 @@ export default class City extends Component{
 }
 }
 
-const customTextProps = { 
-    style: { 
+const customTextProps = {
+  style: {
       fontFamily: 'verdana',
-      fontSize: 25,
-    
-    }
+      fontSize: 20,
+
   }
+}
 
 
 

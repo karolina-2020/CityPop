@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, TextInput, Button, button, TouchableOpacity, Image } from 'react-native';
-
+import Icon from '../assets/search.png';
 
 
 
@@ -22,24 +22,11 @@ export default class Country extends Component {
     }
 
 
-
-
-
-
-    goToCity = () => {
-        alert("here we are")
-        const { navigate } = this.props.navigation;
-        navigate('cityPage')
-
-
-    }
-
-
     async lookForCountryCode() {
         const url = "http://api.geonames.org/searchJSON?&username=weknowit&isNameRequired=true&name=" + this.country
         const response = await fetch(url);
         const data = await response.json();
-        console.log(data.geonames);
+        // console.log(data.geonames);
         var i = 0
         //alert(this.country)
         for (i = 0; i < data.geonames.length; i++) {
@@ -52,16 +39,49 @@ export default class Country extends Component {
 
         }
 
-
-
     }
+ 
+
 
     async searchForCountry(countryCode) {
         const url = "http://api.geonames.org/searchJSON?&username=weknowit&country=" + countryCode
         const response = await fetch(url);
         const data = await response.json();
-        console.log(data.geonames);
+        var cities = [];
+        console.log(data.geonames)
+        for (var i = 0; i < data.geonames.length; i++) {
+            var fcode = data.geonames[i].fcode;
+
+            /******extract only the cities, using the fcodes******/
+
+            if (fcode == "PPLC" || fcode == "PPLA" || fcode == "PPLA2" || fcode == "PPL") {
+                cities.push(data.geonames[i]);
+        }
     }
+    this.lookForThreeBiggest(cities)
+    }
+
+
+    async lookForThreeBiggest(cities) {
+
+        let sortedCities = new Array();
+
+        for (var i = 0; i < cities.length; i++) {
+            sortedCities.push([cities[i].name, cities[i].population]);
+        }
+
+        sortedCities.sort(function (a, b) {
+            return b[1] - a[1]
+        })
+        
+        console.log(sortedCities)
+
+        //Take three biggest + country and navigate to three biggest page
+
+    }
+
+
+
 
 
 
@@ -80,8 +100,8 @@ export default class Country extends Component {
                     placeholder='Enter a country'
                     onChangeText={(val) => this.country = val} //TODO: Format "Sweden"
                 />
-                <button onClick={() => this.lookForCountryCode() /*TODO: Indicate while loading*/}> GO </button >
-                <button onClick={() => this.goToCity()}>Go to City Page"</button>
+                <button onClick={() => this.lookForCountryCode()} /*TODO: Indicate while loading*/> GO</button >
+
             </View>
         );
     }
@@ -94,7 +114,7 @@ export default class Country extends Component {
 const customTextProps = {
     style: {
         fontFamily: 'verdana',
-        fontSize: 25,
+        fontSize: 20,
 
     }
 }
@@ -115,3 +135,27 @@ const styles = StyleSheet.create({
         width: 200,
     }
 });
+
+
+   /*
+        async searchForCountry() {
+    
+                const url = "http://api.geonames.org/searchJSON?&username=weknowit&q=" + this.country
+                const response = await fetch (url);
+                const data = await response.json();
+                var i = 0;
+                for(i = 0; i < 5; i++){
+                  console.log(data.geonames[i])
+             
+                   /* const { navigate } = this.props.navigation;
+                    //this.props.navigation.navigate('populationPage', {city: this.city, population: this.population});
+                   navigate('populationPage', {
+                      city: this.city,
+                      population: this.population
+                    })
+                
+            
+                 
+            }
+        }
+        */

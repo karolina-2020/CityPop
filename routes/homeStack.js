@@ -3,7 +3,8 @@ import {createAppContainer} from 'react-navigation';
 import Home from '../screens/homePage';
 import Country from '../screens/countryPage';
 import City from '../screens/cityPage';
-//import Population from '../screens/populationPage'
+import Population from '../screens/populationPage';
+import ThreeBiggest from '../screens/threeBiggestPage';
 
 
 const screens = {
@@ -13,12 +14,22 @@ const screens = {
     },
     cityPage: {
         screen: City,
-        navigationOptions: { title: "CityPop" }
+        navigationOptions: { title: "CityPop"}
     },
 
     countryPage: {
         screen: Country,
         navigationOptions: { title: "CityPop" }
+    },
+
+    populationPage: {
+        screen: Population,
+        navigationOptions: { title: "CityPop" }
+    },
+
+   threeBiggest: {
+        screen: ThreeBiggest,
+        navigationOptions: { title: "CityPop"}
     }
 
 }
