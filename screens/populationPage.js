@@ -1,35 +1,39 @@
-import React, {Component, useState} from 'react';
-import { StyleSheet, Text, View, TextInput, Image} from 'react-native';
+import React, { Component, useState } from 'react';
+import { StyleSheet, Text, View, TextInput, Image } from 'react-native';
 import City from './cityPage.js'
 
-export default function Population ({navigation}){
+export default function Population({ navigation }) {
 
   /* TODO:
    * Display correct city and population
    * Add error handling
    */
 
-    return(
-    
+  return (
+
     <View style={styles.container}>
       <Image
-        source = {require ('../assets/globe.jpeg')}
-        style={{width: 100, height: 100}}
+        source={require('../assets/globe.jpeg')}
+        style={{ width: 100, height: 100 }}
       />
-     <Text style = {customTextProps.style}>{navigation.getParam('city')}</Text>
-     <Text style = {customTextProps.style}>POPULATION</Text>
-     <Text style = {customTextProps.style}>{navigation.getParam('population')}</Text>
+      <Text style={customTextProps.style}> {navigation.getParam('city')}</Text>
+      <View style={styles.borderClass}>
+        <Text>POPULATION</Text>
+        <Text> {navigation.getParam('population')}</Text>
+
+      </View>
+
     </View>
   );
 }
 
-const customTextProps = { 
-    style: { 
-      fontFamily: 'verdana',
-      fontSize: 25,
-    
-    }
+const customTextProps = {
+  style: {
+    fontFamily: 'verdana',
+    fontSize: 25,
+
   }
+}
 
 
 const styles = StyleSheet.create({
@@ -45,6 +49,16 @@ const styles = StyleSheet.create({
     padding: 8,
     margin: 10,
     width: 200,
+  },
+
+  borderClass: {
+    width: 200,
+    height: 40,
+    borderWidth: 1,
+    borderColor: '#000000',
+    margin: 5,
+    alignItems: 'center',
+
   }
 });
 

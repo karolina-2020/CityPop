@@ -3,9 +3,10 @@ import { StyleSheet, Text, View, TextInput, Button, button, TouchableOpacity, Im
 import Icon from '../assets/search.png';
 
 /*TODO: 
- * make first letter capitalized
  * error handling: for example if no input
  * Add search icon 
+ * Indicate while loading
+ * Erase earlier user input
  */
 
 export default class Country extends Component {
@@ -22,17 +23,31 @@ export default class Country extends Component {
     /* Async funtion to map the user input to a country code */
 
     async lookForCountryCode() {
-        const url = "http://api.geonames.org/searchJSON?&username=weknowit&isNameRequired=true&name=" + this.country
-        const response = await fetch(url);
-        const data = await response.json();
+        try {
+            const url = "http://api.geonames.org/searchJSON?&username=weknowit&fcode=pcli&isNameRequired=true&adminCode1=00&name=" + this.country 
+            const response = await fetch(url);
+            const data = await response.json();
 
-        for (var i = 0; i < data.geonames.length; i++) {
-            if (data.geonames[i].countryName == this.country) {
-
-                this.searchForCountry(data.geonames[i].countryCode)
-                break;
+            /* Throw error if no countries were found */
+            if (data.totalResultsCount == 0) {
+                throw new Error();
             }
+            /*
+            for (var i = 0; i < data.geonames.length; i++) {
 
+                if (data.geonames[i].countryName == this.country  && data.geonames[i].population != 0) {
+
+                    this.searchForCountry(data.geonames[i].countryCode)
+                    break;
+                }
+                
+            }
+            */
+
+           this.searchForCountry(data.geonames[0].countryCode)
+           
+        } catch (error) {
+            alert("No country was found.")
         }
 
     }
@@ -44,7 +59,6 @@ export default class Country extends Component {
         const response = await fetch(url);
         const data = await response.json();
         var cities = [];
-        console.log(data.geonames)
         for (var i = 0; i < data.geonames.length; i++) {
             var fcode = data.geonames[i].fcode;
 
@@ -83,6 +97,13 @@ export default class Country extends Component {
 
     }
 
+    /* Function to remove whitespaces, and make first letter capitalized, the rest to lower case. */
+
+    reformat(str) {
+
+        return str.trim().charAt(0).toUpperCase() + str.trim().slice(1).toLowerCase();
+    }
+
 
     render() {
         return (
@@ -97,7 +118,7 @@ export default class Country extends Component {
 
                     style={styles.input}
                     placeholder='Enter a country'
-                    onChangeText={(val) => this.country = val} //TODO: Format "Sweden"
+                    onChangeText={(val) => this.country = this.reformat(val)}
                 />
                 <button onClick={() => this.lookForCountryCode()} /*TODO: Indicate while loading*/> GO</button >
 
@@ -131,3 +152,4 @@ const styles = StyleSheet.create({
         width: 200,
     }
 });
+

@@ -14,31 +14,63 @@ export default class City extends Component {
 
 
 
-  /*
-   * TOD0:
-   * make first letter capitalized
+  /*TODO: 
    * error handling: for example if no input
+   * Add search icon 
+   * Indicate while loading
+   * Erase earlier user input
    */
 
 
-   /* Asyncronous funtion to interract wit API and dynamically extract city and population from JSON array */
-  
-   async searchForCity() {
-    const url = "http://api.geonames.org/searchJSON?&username=weknowit&q=" + this.city
-    const response = await fetch(url);
-    const data = await response.json();
-    this.population = data.geonames[0].population
+  /* Asyncronous funtion to interract wit API and dynamically extract city and population from JSON array */
 
-/* Navigate to population page with city and population parameter */
+  async searchForCity() {
+    try {
+      const url = "http://api.geonames.org/searchJSON?&username=weknowit&isNameRequired=true&q=" + this.city
+      const response = await fetch(url);
+      const data = await response.json();
 
-    const { navigate } = this.props.navigation;
-    navigate('populationPage', {
-      city: this.city,
-      population: this.population
-    })
+      /* If no results, throw error */
 
+      if (data.totalResultsCount == 0) {
+        throw new Error();
+      }
+      for (var i = 0; i < data.geonames.length; i++) {
+        if (data.geonames[i].name == this.city) {
+          this.population = data.geonames[i].population,
+            this.city = data.geonames[i].name
+
+          /* Navigate to population page with city and population parameter */
+
+          const { navigate } = this.props.navigation;
+          navigate('populationPage', {
+            city: this.city,
+            population: this.population
+          })
+        }
+        break;
+      }
+
+
+
+
+    } catch (error) {
+      alert("Sorry, no city was found.");
+    }
 
   }
+
+
+
+
+
+  /* Function to remove whitespaces, and make first letter capitalized, the rest to lower case. */
+
+  reformat(str) {
+
+    return str.trim().charAt(0).toUpperCase() + str.trim().slice(1).toLowerCase();
+  }
+
 
   render() {
     return (
@@ -52,7 +84,7 @@ export default class City extends Component {
         <TextInput
           style={styles.input}
           placeholder='Enter a city'
-          onChangeText={(val) => this.city = (val)}
+          onChangeText={(val) => this.city = this.reformat(val)}
         />
         <button onClick={() => this.searchForCity()}> GO </button>
       </View>
@@ -64,7 +96,6 @@ const customTextProps = {
   style: {
     fontFamily: 'verdana',
     fontSize: 20,
-
   }
 }
 
