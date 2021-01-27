@@ -12,7 +12,6 @@ export default function Population ({navigation}){
     return(
     
     <View style={styles.container}>
-
       <Image
         source = {require ('../assets/globe.jpeg')}
         style={{width: 100, height: 100}}

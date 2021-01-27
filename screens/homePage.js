@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
-import { setCustomText } from 'react-native-global-props';
 
 export default function Home({ navigation }) {
 
@@ -10,18 +9,19 @@ export default function Home({ navigation }) {
       fontFamily: 'verdana',
       fontSize: 30,
 
-
     }
   }
 
-  // Needed to render the picture correctly?
   const picture = require("../assets/globe.jpeg")
 
-  //setCustomText(customTextProps);
+
+  /* Constant to handle when "Search for City" button is clicked. Navigate to city page. */
 
   const pressHandlerCity = () => {
     navigation.navigate('cityPage')
   }
+
+  /* Constant to handle when "Search for Country" button is clicked. Navigate to country page. */
 
   const pressHandlerCountry = () => {
     navigation.navigate('countryPage')
@@ -35,7 +35,6 @@ export default function Home({ navigation }) {
           style={{ width: 100, height: 100 }}
         />
       </View>
-
       <Text style={customTextProps.style}>CityPop</Text>
       <View style={styles.borderClass}>
         <TouchableOpacity

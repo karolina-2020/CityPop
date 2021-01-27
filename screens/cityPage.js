@@ -1,71 +1,72 @@
-import React, {Component, useState} from 'react';
-import { StyleSheet, Text, View, TextInput, Image} from 'react-native';
+import React, { Component, useState } from 'react';
+import { StyleSheet, Text, View, TextInput, Image } from 'react-native';
 
-export default class City extends Component{
+export default class City extends Component {
 
-    constructor(props) {
-        super(props);
-     
-        this.state = {
-          city: null,
-          population: null
-        };
-      }
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      city: null,
+      population: null
+    };
+  }
 
 
 
-    /*****
-     * TOD0:
-     *  make first letter capitalized
-     * error handling for example if no input
-     *****/
+  /*
+   * TOD0:
+   * make first letter capitalized
+   * error handling: for example if no input
+   */
 
-    async searchForCity()
-    {
-        const url = "http://api.geonames.org/searchJSON?&username=weknowit&q=" + this.city
-        const response = await fetch (url);
-        const data = await response.json();
-        console.log(data.geonames.population);
-          this.population = data.geonames[0].population
-     
-            const { navigate } = this.props.navigation;
-            //this.props.navigation.navigate('populationPage', {city: this.city, population: this.population});
-           navigate('populationPage', {
-              city: this.city,
-              population: this.population
-            })
-    
-         
-    }
+
+   /* Asyncronous funtion to interract wit API and dynamically extract city and population from JSON array */
   
-    render() {
-    return (
-    <View style={styles.container}>
+   async searchForCity() {
+    const url = "http://api.geonames.org/searchJSON?&username=weknowit&q=" + this.city
+    const response = await fetch(url);
+    const data = await response.json();
+    this.population = data.geonames[0].population
 
-      <Image
-        source = {require ('../assets/globe.jpeg')}
-        style={{width: 100, height: 100}}
-      />
-     <Text style = {customTextProps.style}>SEARCH BY CITY</Text>
-    <TextInput 
-      style = {styles.input} 
-      placeholder='Enter a city'
-      onChangeText = {(val) => this.city = (val)}
-      />
-      <button onClick= {()=> this.searchForCity()}> GO </button>
-    </View>
-  );
-}
+/* Navigate to population page with city and population parameter */
+
+    const { navigate } = this.props.navigation;
+    navigate('populationPage', {
+      city: this.city,
+      population: this.population
+    })
+
+
+  }
+
+  render() {
+    return (
+      <View style={styles.container}>
+
+        <Image
+          source={require('../assets/globe.jpeg')}
+          style={{ width: 100, height: 100 }}
+        />
+        <Text style={customTextProps.style}>SEARCH BY CITY</Text>
+        <TextInput
+          style={styles.input}
+          placeholder='Enter a city'
+          onChangeText={(val) => this.city = (val)}
+        />
+        <button onClick={() => this.searchForCity()}> GO </button>
+      </View>
+    );
+  }
 }
 
 const customTextProps = {
   style: {
-      fontFamily: 'verdana',
-      fontSize: 20,
+    fontFamily: 'verdana',
+    fontSize: 20,
 
   }
 }
-
 
 
 const styles = StyleSheet.create({

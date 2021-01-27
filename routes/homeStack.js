@@ -6,11 +6,15 @@ import City from '../screens/cityPage';
 import Population from '../screens/populationPage';
 import ThreeBiggest from '../screens/threeBiggestPage';
 
+/* Constant with screens to set navigation options  */
 
 const screens = {
     homePage: {
         screen: Home,
-        navigationOptions: { title: "" }
+
+        /* make title field empty for aestetic reasons */
+        
+        navigationOptions: { title: "" } 
     },
     cityPage: {
         screen: City,

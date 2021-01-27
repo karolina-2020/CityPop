@@ -1,36 +1,82 @@
-import React, {Component, useState} from 'react';
-import { StyleSheet, Text, View, TextInput, Image} from 'react-native';
-//import City from './cityPage.js'
+import React, { Component, useState } from 'react';
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 
-export default function threeBiggest ({navigation}){
-    /*TODO:
-    *Navigate when clicking on cities.
-    */
-    return(
+
+export default function threeBiggest({ navigation }) {
+
+  const city1 = navigation.getParam('city1');
+  const city2 = navigation.getParam('city2');
+  const city3 = navigation.getParam('city3');
+
+
+  /* TODO:
+  /* Navigate when clicking on cities.
+  */
+
+  
+  /* Constant to handle click from city buttons. Different props are sent as argument depending on which button is clicked. 
+     Navigating to corresponding city page with city and population as parameter */
+
+  const pressHandlerPopulation = (props) => {
+    navigation.navigate('populationPage', {
+      city: props[0],
+      population: props[1]
+    })
+  }
+
+
+  return (
 
     <View style={styles.container}>
 
       <Image
-        source = {require ('../assets/globe.jpeg')}
-        style={{width: 100, height: 100}}
+        source={require('../assets/globe.jpeg')}
+        style={{ width: 100, height: 100 }}
       />
-     <Text style = {customTextProps.style}>{navigation.getParam('city1')}</Text>
-     <Text style = {customTextProps.style}>{navigation.getParam('city2')}</Text>
-     <Text style = {customTextProps.style}>{navigation.getParam('city3')}</Text>
-    
-    
+
+      <View style={styles.borderClass}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => pressHandlerPopulation(city1)}
+        >
+
+          <Text> {city1[0].toUpperCase()} </Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.borderClass}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => pressHandlerPopulation(city2)}
+        >
+
+          <Text> {city2[0].toUpperCase()} </Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.borderClass}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => pressHandlerPopulation(city3)}
+        >
+
+          <Text> {city3[0].toUpperCase()} </Text>
+        </TouchableOpacity>
+      </View>
+
+
     </View>
   );
+
+
+
 }
 
-const customTextProps = { 
-    style: { 
-      fontFamily: 'verdana',
-      fontSize: 25,
-    
-    }
-  }
+const customTextProps = {
+  style: {
+    fontFamily: 'verdana',
+    fontSize: 25,
 
+  }
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -39,12 +85,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  input: {
-    borderWidth: 1,
-    bprderColor: '#777',
-    padding: 8,
-    margin: 10,
+  button: {
+    alignItems: 'center',
+    color: '#fff',
+    padding: 10,
+  },
+
+  borderClass: {
     width: 200,
+    height: 40,
+    borderWidth: 1,
+    borderColor: '#000000',
+    margin: 5
+
   }
+
 });
 

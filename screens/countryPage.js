@@ -2,14 +2,12 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, TextInput, Button, button, TouchableOpacity, Image } from 'react-native';
 import Icon from '../assets/search.png';
 
-
-
-
-/************TODO: 
+/*TODO: 
  * make first letter capitalized
- * error handling for example if no input
- * navigate to city page when rendered
+ * error handling: for example if no input
+ * Add search icon 
  */
+
 export default class Country extends Component {
 
     constructor(props) {
@@ -21,27 +19,25 @@ export default class Country extends Component {
         };
     }
 
+    /* Async funtion to map the user input to a country code */
 
     async lookForCountryCode() {
         const url = "http://api.geonames.org/searchJSON?&username=weknowit&isNameRequired=true&name=" + this.country
         const response = await fetch(url);
         const data = await response.json();
-        // console.log(data.geonames);
-        var i = 0
-        //alert(this.country)
-        for (i = 0; i < data.geonames.length; i++) {
+
+        for (var i = 0; i < data.geonames.length; i++) {
             if (data.geonames[i].countryName == this.country) {
 
                 this.searchForCountry(data.geonames[i].countryCode)
                 break;
             }
 
-
         }
 
     }
- 
 
+    /* Async function to search for a country using its country code */
 
     async searchForCountry(countryCode) {
         const url = "http://api.geonames.org/searchJSON?&username=weknowit&country=" + countryCode
@@ -52,17 +48,19 @@ export default class Country extends Component {
         for (var i = 0; i < data.geonames.length; i++) {
             var fcode = data.geonames[i].fcode;
 
-            /******extract only the cities, using the fcodes******/
+            /* extract only the cities, using the fcodes */
 
             if (fcode == "PPLC" || fcode == "PPLA" || fcode == "PPLA2" || fcode == "PPL") {
                 cities.push(data.geonames[i]);
+            }
         }
-    }
-    this.lookForThreeBiggest(cities)
+
+        this.lookForThreeBiggest(cities)
     }
 
+    /* Function to sort cities according to size: biggest .. smallest. Then take three biggest and navigate to three biggest page */
 
-    async lookForThreeBiggest(cities) {
+    lookForThreeBiggest(cities) {
 
         let sortedCities = new Array();
 
@@ -73,20 +71,20 @@ export default class Country extends Component {
         sortedCities.sort(function (a, b) {
             return b[1] - a[1]
         })
-        
-        console.log(sortedCities)
 
-        //Take three biggest + country and navigate to three biggest page
+
+        const { navigate } = this.props.navigation;
+        navigate('threeBiggest', {
+            country: this.country,
+            city1: sortedCities[0],
+            city2: sortedCities[1],
+            city3: sortedCities[2],
+        })
 
     }
 
 
-
-
-
-
     render() {
-
         return (
 
             <View style={styles.container}>
@@ -96,6 +94,7 @@ export default class Country extends Component {
                 />
                 <Text style={customTextProps.style}>SEARCH BY COUNTRY</Text>
                 <TextInput
+
                     style={styles.input}
                     placeholder='Enter a country'
                     onChangeText={(val) => this.country = val} //TODO: Format "Sweden"
@@ -106,10 +105,7 @@ export default class Country extends Component {
         );
     }
 
-
 }
-
-
 
 const customTextProps = {
     style: {
@@ -135,27 +131,3 @@ const styles = StyleSheet.create({
         width: 200,
     }
 });
-
-
-   /*
-        async searchForCountry() {
-    
-                const url = "http://api.geonames.org/searchJSON?&username=weknowit&q=" + this.country
-                const response = await fetch (url);
-                const data = await response.json();
-                var i = 0;
-                for(i = 0; i < 5; i++){
-                  console.log(data.geonames[i])
-             
-                   /* const { navigate } = this.props.navigation;
-                    //this.props.navigation.navigate('populationPage', {city: this.city, population: this.population});
-                   navigate('populationPage', {
-                      city: this.city,
-                      population: this.population
-                    })
-                
-            
-                 
-            }
-        }
-        */
