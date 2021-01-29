@@ -1,34 +1,42 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, TextInput, Button, button, TouchableOpacity, Image } from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, View, TextInput, Button, button, TouchableOpacity, Image } from 'react-native';
 import Icon from '../assets/search.png';
+//import Loader from './Loader';
 
 /*TODO: 
  * error handling: for example if no input
  * Add search icon 
- * Indicate while loading
- * Erase earlier user input
  */
 
 export default class Country extends Component {
 
     constructor(props) {
         super(props);
+        this.textInput = React.createRef();
 
         this.state = {
             country: null,
             countryCode: null,
+            loading: false,
+            textInput: ''
         };
     }
 
-    /* Async funtion to map the user input to a country code */
+    // Async funtion to map the user input to a country code.
 
     async lookForCountryCode() {
+        // Ugly way of clearing the text input, should be done when navigating back. 
+        this.textInput.current.clear();
+
         try {
-            const url = "http://api.geonames.org/searchJSON?&username=weknowit&fcode=pcli&isNameRequired=true&adminCode1=00&name=" + this.country 
+            this.setState({ loading: true })
+            const url = "http://api.geonames.org/searchJSON?&username=weknowit&fcode=pcli&isNameRequired=true&adminCode1=00&name=" + this.country
             const response = await fetch(url);
             const data = await response.json();
 
-            /* Throw error if no countries were found */
+
+            /* Throw error if no countries were found. */
+
             if (data.totalResultsCount == 0) {
                 throw new Error();
             }
@@ -44,20 +52,24 @@ export default class Country extends Component {
             }
             */
 
-           this.searchForCountry(data.geonames[0].countryCode)
-           
+            this.searchForCountry(data.geonames[0].countryCode)
+
         } catch (error) {
+            this.setState({ loading: false })
             alert("No country was found.")
+            this.textInput.current.clear();
         }
 
     }
 
-    /* Async function to search for a country using its country code */
+    //Async function to search for a country using its country code 
 
     async searchForCountry(countryCode) {
+        this.setState({ loading: true })
         const url = "http://api.geonames.org/searchJSON?&username=weknowit&country=" + countryCode
         const response = await fetch(url);
         const data = await response.json();
+
         var cities = [];
         for (var i = 0; i < data.geonames.length; i++) {
             var fcode = data.geonames[i].fcode;
@@ -72,7 +84,8 @@ export default class Country extends Component {
         this.lookForThreeBiggest(cities)
     }
 
-    /* Function to sort cities according to size: biggest .. smallest. Then take three biggest and navigate to three biggest page */
+    /* Function to sort cities according to size: biggest .. smallest. 
+        Then take three biggest and navigate to three biggest page */
 
     lookForThreeBiggest(cities) {
 
@@ -94,10 +107,12 @@ export default class Country extends Component {
             city2: sortedCities[1],
             city3: sortedCities[2],
         })
+        this.setState({ loading: false });
 
     }
 
-    /* Function to remove whitespaces, and make first letter capitalized, the rest to lower case. */
+
+    // Function to remove whitespaces, and make first letter capitalized and the rest to lower case.
 
     reformat(str) {
 
@@ -109,47 +124,78 @@ export default class Country extends Component {
         return (
 
             <View style={styles.container}>
-                <Image
-                    source={require('../assets/globe.jpeg')}
-                    style={{ width: 100, height: 100 }}
-                />
+
+                <View style={styles.picture}>
+                    <Image
+                        source={require('../assets/newglobe.png')}
+                        style={{ width: 100, height: 100 }}
+                    />
+                </View>
                 <Text style={customTextProps.style}>SEARCH BY COUNTRY</Text>
                 <TextInput
-
+                    ref={this.textInput}
                     style={styles.input}
                     placeholder='Enter a country'
                     onChangeText={(val) => this.country = this.reformat(val)}
                 />
-                <button onClick={() => this.lookForCountryCode()} /*TODO: Indicate while loading*/> GO</button >
 
+                <TouchableOpacity
+                    onPress={() => this.lookForCountryCode()}>
+                    <Image
+                        source={require('../assets/newsearch.png')}
+                        style={styles.roundButton}
+                    />
+                </TouchableOpacity>
+                
+                <Text /* Ugly solution to get some whitespace */> </Text>
+                <ActivityIndicator margin='100' animating={this.state.loading} color='#000000' ></ActivityIndicator>
             </View>
         );
     }
-
 }
+
 
 const customTextProps = {
     style: {
-        fontFamily: 'verdana',
+        //fontFamily: 'Phosphate',
+        fontFamily: 'helvetica',
         fontSize: 20,
+        padding: 20
 
     }
 }
+
 
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#b2bfdb',
         alignItems: 'center',
         justifyContent: 'center',
     },
     input: {
         borderWidth: 1,
-        bprderColor: '#777',
+        borderColor: '#777',
+        backgroundColor: '#ffff',
         padding: 8,
         margin: 10,
         width: 200,
-    }
+    },
+    picture: {
+        alignItems: 'center',
+    },
+
+    roundButton: {
+        width: 40,
+        height: 40,
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 10,
+        borderRadius: 100,
+        backgroundColor: 'orange',
+        borderColor: '#000000',
+        borderWidth: 1
+    },
 });
 

@@ -1,6 +1,6 @@
 import React, { Component, useState } from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
-
+import { LinearGradient } from 'expo'
 
 export default function threeBiggest({ navigation }) {
 
@@ -9,11 +9,6 @@ export default function threeBiggest({ navigation }) {
   const city3 = navigation.getParam('city3');
 
 
-  /* TODO:
-  /* Navigate when clicking on cities.
-  */
-
-  
   /* Constant to handle click from city buttons. Different props are sent as argument depending on which button is clicked. 
      Navigating to corresponding city page with city and population as parameter */
 
@@ -29,11 +24,12 @@ export default function threeBiggest({ navigation }) {
 
     <View style={styles.container}>
 
-      <Image
-        source={require('../assets/globe.jpeg')}
-        style={{ width: 100, height: 100 }}
-      />
-
+      <View style={styles.picture}>
+        <Image
+          source={require('../assets/newglobe.png')}
+          style={{ width: 100, height: 100 }}
+        />
+      </View>
       <View style={styles.borderClass}>
         <TouchableOpacity
           style={styles.button}
@@ -72,8 +68,10 @@ export default function threeBiggest({ navigation }) {
 
 const customTextProps = {
   style: {
-    fontFamily: 'verdana',
-    fontSize: 25,
+    //fontFamily: 'Phosphate',
+    fontFamily: 'helvetica',
+    fontSize: 20,
+    padding: 20
 
   }
 }
@@ -81,7 +79,7 @@ const customTextProps = {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#b2bfdb',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -98,7 +96,11 @@ const styles = StyleSheet.create({
     borderColor: '#000000',
     margin: 5
 
-  }
+  },
+  picture: {
+    alignItems: 'center',
+    padding: 20
+  },
 
 });
 

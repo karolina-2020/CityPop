@@ -2,10 +2,12 @@ import React, {Component, useState} from 'react';
 import { render } from 'react-dom';
 import { StyleSheet, Image} from 'react-native';
 import Navigator from './routes/homeStack';
+import {LinearGradient} from 'expo'
 
 export default function App() {
 
   return (
+
       <Navigator />
   );
 }

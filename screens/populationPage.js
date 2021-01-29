@@ -1,25 +1,23 @@
 import React, { Component, useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Image } from 'react-native';
 import City from './cityPage.js'
+import { LinearGradient } from 'expo'
 
 export default function Population({ navigation }) {
-
-  /* TODO:
-   * Display correct city and population
-   * Add error handling
-   */
 
   return (
 
     <View style={styles.container}>
-      <Image
-        source={require('../assets/globe.jpeg')}
-        style={{ width: 100, height: 100 }}
-      />
-      <Text style={customTextProps.style}> {navigation.getParam('city')}</Text>
+      <View style={styles.picture}> 
+        <Image
+          source={require('../assets/newglobe.png')}
+          style={{ width: 100, height: 100 }}
+        />
+        </View>
+      <Text style={customTextProps.style}> {navigation.getParam('city').toUpperCase()}</Text>
       <View style={styles.borderClass}>
         <Text>POPULATION</Text>
-        <Text> {navigation.getParam('population')}</Text>
+        <Text> {navigation.getParam('population').toLocaleString()}</Text>
 
       </View>
 
@@ -29,8 +27,10 @@ export default function Population({ navigation }) {
 
 const customTextProps = {
   style: {
-    fontFamily: 'verdana',
-    fontSize: 25,
+    //fontFamily: 'Phosphate',
+    fontFamily: 'helvetica',
+    fontSize: 20,
+    padding: 20
 
   }
 }
@@ -39,7 +39,7 @@ const customTextProps = {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#b2bfdb',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -59,6 +59,9 @@ const styles = StyleSheet.create({
     margin: 5,
     alignItems: 'center',
 
-  }
+  },
+  picture: {
+    alignItems: 'center',
+  },
 });
 
