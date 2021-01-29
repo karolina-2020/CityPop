@@ -60,7 +60,6 @@ export default class City extends Component {
           cities.push(data.geonames[i]);
         }
       }
-      console.log(cities)
 
       if (cities.length == 0) {
         throw new Error();
@@ -117,6 +116,12 @@ export default class City extends Component {
           style={styles.input}
           placeholder='Enter a city'
           onChangeText={(val) => this.city = this.reformat(val)}
+          onKeyPress={(event) => {
+            if (event.nativeEvent.key == "Enter") {
+              this.searchForCity();
+            }
+          }}
+
         />
         <TouchableOpacity
           onPress={() => this.searchForCity()}>
@@ -125,7 +130,7 @@ export default class City extends Component {
             style={styles.roundButton}
           />
         </TouchableOpacity>
-        <Text /* Ugly solution to add some whitespace*/ > </Text>
+        <Text /* Ugly solution to add some whitespace */ > </Text>
         <ActivityIndicator animating={this.state.loading} color='#000000'></ActivityIndicator>
 
       </View>

@@ -128,6 +128,11 @@ export default class Country extends Component {
                     style={styles.input}
                     placeholder='Enter a country'
                     onChangeText={(val) => this.country = this.reformat(val)}
+                    onKeyPress={(event) => {
+                        if (event.nativeEvent.key == "Enter") {
+                            this.lookForCountryCode();
+                        }
+                    }}
                 />
                 <TouchableOpacity
                     onPress={() => this.lookForCountryCode()}>
