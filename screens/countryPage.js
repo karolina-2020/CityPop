@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
-import { ActivityIndicator, StyleSheet, Text, View, TextInput, Button, button, TouchableOpacity, Image } from 'react-native';
-import Icon from '../assets/search.png';
-//import Loader from './Loader';
+import {
+    ActivityIndicator,
+    StyleSheet,
+    Text,
+    View,
+    TextInput,
+    TouchableOpacity,
+    Image
+} from 'react-native';
 
-/*TODO: 
- * error handling: for example if no input
- * Add search icon 
- */
 
 export default class Country extends Component {
 
@@ -25,7 +27,8 @@ export default class Country extends Component {
     // Async funtion to map the user input to a country code.
 
     async lookForCountryCode() {
-        // Ugly way of clearing the text input, should be done when navigating back. 
+
+        // Ugly solution for clearing the text input, should rather be done when navigating back. 
         this.textInput.current.clear();
 
         try {
@@ -35,28 +38,16 @@ export default class Country extends Component {
             const data = await response.json();
 
 
-            /* Throw error if no countries were found. */
-
+            // Throw error if no countries were found. 
             if (data.totalResultsCount == 0) {
                 throw new Error();
             }
-            /*
-            for (var i = 0; i < data.geonames.length; i++) {
-
-                if (data.geonames[i].countryName == this.country  && data.geonames[i].population != 0) {
-
-                    this.searchForCountry(data.geonames[i].countryCode)
-                    break;
-                }
-                
-            }
-            */
 
             this.searchForCountry(data.geonames[0].countryCode)
 
         } catch (error) {
             this.setState({ loading: false })
-            alert("No country was found.")
+            alert("Sorry, no country was found.")
             this.textInput.current.clear();
         }
 
@@ -74,9 +65,9 @@ export default class Country extends Component {
         for (var i = 0; i < data.geonames.length; i++) {
             var fcode = data.geonames[i].fcode;
 
-            // Filter only the cities, using the fcodes 
+            // Filter only cities, using the fcodes 
 
-            if (fcode == "PPLC" || fcode == "PPLA" || fcode == "PPLA2" || fcode == "PPL") {
+            if (fcode == 'PPLC' || fcode.startsWith('PPLA')) {
                 cities.push(data.geonames[i]);
             }
         }
@@ -85,7 +76,7 @@ export default class Country extends Component {
     }
 
     /* Function to sort cities according to size: biggest .. smallest. 
-        Then take three biggest and navigate to three biggest page */
+        Then take the three biggest and navigate to three biggest page */
 
     lookForThreeBiggest(cities) {
 
@@ -121,13 +112,13 @@ export default class Country extends Component {
 
 
     render() {
+
         return (
 
             <View style={styles.container}>
-
                 <View style={styles.picture}>
                     <Image
-                        source={require('../assets/newglobe.png')}
+                        source={require('../assets/globe.png')}
                         style={{ width: 100, height: 100 }}
                     />
                 </View>
@@ -141,12 +132,12 @@ export default class Country extends Component {
                 <TouchableOpacity
                     onPress={() => this.lookForCountryCode()}>
                     <Image
-                        source={require('../assets/newsearch.png')}
+                        source={require('../assets/search.png')}
                         style={styles.roundButton}
                     />
                 </TouchableOpacity>
 
-                <Text /* Ugly solution to get some whitespace */> </Text>
+                <Text /* Ugly solution to add some whitespace */> </Text>
 
                 <ActivityIndicator margin='100' animating={this.state.loading} color='#000000' ></ActivityIndicator>
             </View>
@@ -157,7 +148,6 @@ export default class Country extends Component {
 
 const customTextProps = {
     style: {
-        //fontFamily: 'Phosphate',
         fontFamily: 'helvetica',
         fontSize: 20,
         padding: 20

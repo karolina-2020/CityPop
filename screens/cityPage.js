@@ -1,5 +1,13 @@
-import React, { Component, useState } from 'react';
-import { ActivityIndicator, StyleSheet, Text, View, TextInput, Image, TouchableOpacity } from 'react-native';
+import React, { Component } from 'react';
+import {
+  ActivityIndicator,
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  Image,
+  TouchableOpacity
+} from 'react-native';
 
 export default class City extends Component {
 
@@ -16,12 +24,11 @@ export default class City extends Component {
     };
   }
 
-
-  // Asyncronous funtion to interract wit API and dynamically extract city and population from JSON array */
+  // Async function to interract wit API and dynamically extract city and population from JSON array 
 
   async searchForCity() {
 
-    // Ugly way of clearing the text input, should be done when navigating back. 
+    // Ugly solution for clearing the text input, should probably rather be done when navigating back.
     this.textInput.current.clear();
 
     try {
@@ -47,18 +54,19 @@ export default class City extends Component {
       for (var i = 0; i < data.geonames.length; i++) {
         var fcode = data.geonames[i].fcode;
 
-        // Filter only the cities, using fcodes
+        // Filter the cities, using fcodes.
 
-        if (fcode == "PPLC" || fcode == "PPLA" || fcode == "PPLA2") {
+        if (fcode == 'PPLC' || fcode.startsWith('PPLA')) {
           cities.push(data.geonames[i]);
         }
       }
+      console.log(cities)
 
       if (cities.length == 0) {
         throw new Error();
       }
 
-      // Take the city and population from first element in the JSON array.
+      // Take the city and population from the first element in the array.
 
       this.city = cities[0].name;
       this.population = cities[0].population;
@@ -84,7 +92,7 @@ export default class City extends Component {
 
   }
 
-  // Function to remove whitespaces, and make first letter capitalized, the rest to lower case. 
+  // Function to remove whitespaces, and make first letter capitalized and the rest to lower case. 
 
   reformat(str) {
 
@@ -97,10 +105,9 @@ export default class City extends Component {
     return (
 
       <View style={styles.container}>
-
         <View style={styles.picture}>
           <Image
-            source={require('../assets/newglobe.png')}
+            source={require('../assets/globe.png')}
             style={{ width: 100, height: 100 }}
           />
         </View>
@@ -114,11 +121,11 @@ export default class City extends Component {
         <TouchableOpacity
           onPress={() => this.searchForCity()}>
           <Image
-            source={require('../assets/newsearch.png')}
+            source={require('../assets/search.png')}
             style={styles.roundButton}
           />
         </TouchableOpacity>
-        <Text /* Ugly solution to get some whitespace*/ > </Text>
+        <Text /* Ugly solution to add some whitespace*/ > </Text>
         <ActivityIndicator animating={this.state.loading} color='#000000'></ActivityIndicator>
 
       </View>
@@ -128,15 +135,12 @@ export default class City extends Component {
 
 const customTextProps = {
   style: {
-    //fontFamily: 'Phosphate',
     fontFamily: 'helvetica',
     fontSize: 20,
     padding: 20
 
   }
 }
-
-
 
 const styles = StyleSheet.create({
   container: {

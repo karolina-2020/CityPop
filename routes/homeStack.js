@@ -1,24 +1,22 @@
-import {createStackNavigator} from 'react-navigation-stack';
-import {createAppContainer} from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
+import { createAppContainer } from 'react-navigation';
 import Home from '../screens/homePage';
 import Country from '../screens/countryPage';
 import City from '../screens/cityPage';
 import Population from '../screens/populationPage';
 import ThreeBiggest from '../screens/threeBiggestPage';
 
-/* Constant with screens to set navigation options  */
+// Constant with screens to set navigation options.
 
 const screens = {
     homePage: {
         screen: Home,
-
-        /* make title field empty for aestetic reasons */
-        
-        navigationOptions: { title: "" } 
+        // Title field empty for aesthetic reasons.
+        navigationOptions: { title: "" }
     },
     cityPage: {
         screen: City,
-        navigationOptions: { title: "CityPop"}
+        navigationOptions: { title: "CityPop" }
     },
 
     countryPage: {
@@ -31,13 +29,12 @@ const screens = {
         navigationOptions: { title: "CityPop" }
     },
 
-   threeBiggest: {
+    threeBiggest: {
         screen: ThreeBiggest,
-        navigationOptions: { title: "CityPop"}
+        navigationOptions: { title: "CityPop" }
     }
 
 }
-
 
 const HomeStack = createStackNavigator(screens);
 

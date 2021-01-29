@@ -8,26 +8,23 @@ export default function Population({ navigation }) {
   return (
 
     <View style={styles.container}>
-      <View style={styles.picture}> 
+      <View style={styles.picture}>
         <Image
-          source={require('../assets/newglobe.png')}
+          source={require('../assets/globe.png')}
           style={{ width: 100, height: 100 }}
         />
-        </View>
+      </View>
       <Text style={customTextProps.style}> {navigation.getParam('city').toUpperCase()}</Text>
       <View style={styles.borderClass}>
         <Text>POPULATION</Text>
         <Text> {navigation.getParam('population').toLocaleString()}</Text>
-
       </View>
-
     </View>
   );
 }
 
 const customTextProps = {
   style: {
-    //fontFamily: 'Phosphate',
     fontFamily: 'helvetica',
     fontSize: 20,
     padding: 20

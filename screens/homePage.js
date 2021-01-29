@@ -1,11 +1,10 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
-import {LinearGradient} from 'expo';
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+
 export default function Home({ navigation }) {
 
   const customTextProps = {
     style: {
-      //fontFamily: 'Phosphate',
       fontFamily: 'helvetica',
       fontSize: 30,
       padding: 20
@@ -13,7 +12,7 @@ export default function Home({ navigation }) {
     }
   }
 
-  const picture = require("../assets/newglobe.png")
+  const picture = require("../assets/globe.png")
 
 
   // Constant to handle when "Search for City" button is clicked. Navigate to city page.
@@ -29,9 +28,8 @@ export default function Home({ navigation }) {
   }
 
   return (
-    
+
     <View style={styles.container}>
-  
       <View style={styles.picture}>
         <Image
           source={picture}
@@ -52,12 +50,10 @@ export default function Home({ navigation }) {
           style={styles.button}
           onPress={pressHandlerCity}
         >
-
-          <Text style= {styles.text}> SEARCH BY CITY </Text>
+          <Text style={styles.text}> SEARCH BY CITY </Text>
         </TouchableOpacity>
       </View>
     </View>
-  
   )
 }
 

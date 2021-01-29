@@ -8,8 +8,9 @@ export default function threeBiggest({ navigation }) {
   const city3 = navigation.getParam('city3');
 
 
-  /* Constant to handle click from city buttons. Different props are sent as argument depending on which button is clicked. 
-     Navigating to corresponding city page with city and population as parameter */
+  /* Constant to handle click from city buttons. Different props are sent as argument 
+     depending on which button is clicked. Navigating to corresponding city page with city
+     and population as parameter */
 
   const pressHandlerPopulation = (props) => {
     navigation.navigate('populationPage', {
@@ -18,14 +19,12 @@ export default function threeBiggest({ navigation }) {
     })
   }
 
-
   return (
 
     <View style={styles.container}>
-
       <View style={styles.picture}>
         <Image
-          source={require('../assets/newglobe.png')}
+          source={require('../assets/globe.png')}
           style={{ width: 100, height: 100 }}
         />
       </View>
@@ -34,7 +33,6 @@ export default function threeBiggest({ navigation }) {
           style={styles.button}
           onPress={() => pressHandlerPopulation(city1)}
         >
-
           <Text> {city1[0].toUpperCase()} </Text>
         </TouchableOpacity>
       </View>
@@ -43,7 +41,6 @@ export default function threeBiggest({ navigation }) {
           style={styles.button}
           onPress={() => pressHandlerPopulation(city2)}
         >
-
           <Text> {city2[0].toUpperCase()} </Text>
         </TouchableOpacity>
       </View>
@@ -52,26 +49,19 @@ export default function threeBiggest({ navigation }) {
           style={styles.button}
           onPress={() => pressHandlerPopulation(city3)}
         >
-
           <Text> {city3[0].toUpperCase()} </Text>
         </TouchableOpacity>
       </View>
-
-
     </View>
   );
-
-
 
 }
 
 const customTextProps = {
   style: {
-    //fontFamily: 'Phosphate',
     fontFamily: 'helvetica',
     fontSize: 20,
     padding: 20
-
   }
 }
 
@@ -94,12 +84,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#000000',
     margin: 5
-
   },
+
   picture: {
     alignItems: 'center',
     padding: 20
   },
-
 });
 
