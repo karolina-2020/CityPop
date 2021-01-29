@@ -17,30 +17,24 @@ export default class City extends Component {
   }
 
 
-  /*TODO: 
-   * error handling: for example if no input
-   * Add search icon 
-   * Erase earlier user input
-   */
-
-
-  /* Asyncronous funtion to interract wit API and dynamically extract city and population from JSON array */
+  // Asyncronous funtion to interract wit API and dynamically extract city and population from JSON array */
 
   async searchForCity() {
+
     // Ugly way of clearing the text input, should be done when navigating back. 
     this.textInput.current.clear();
-    
+
     try {
       this.setState({ loading: true })
 
       /* Fetch from API with parameters: 
        - order by relevance
        - feature class "populated place"
-       -  name. 
-      If no results, throw error */
+       - name_equals. 
+      If no results, or if the results weren't cities, throw error */
 
 
-      const url = "http://api.geonames.org/searchJSON?&username=weknowit&orderby=relevance&fclass=p&name_startsWith=" + this.city + "&name=" + this.city
+      const url = "http://api.geonames.org/searchJSON?&username=weknowit&orderby=relevance&fclass=p&name_equals=" + this.city
       const response = await fetch(url);
       const data = await response.json();
 
@@ -48,22 +42,26 @@ export default class City extends Component {
         throw new Error();
       }
 
-      /*var i= 0;
-      while (i < data.geonames.length) {
+      var cities = [];
 
-        if (data.geonames[i].name == this.city && data.geonames[i].population != 0) {
-        this.city = data.geonames[i].name;
-       
-        break;
-        } else {
-          i++;
-        } 
-      }*/
+      for (var i = 0; i < data.geonames.length; i++) {
+        var fcode = data.geonames[i].fcode;
 
-      this.city = data.geonames[0].name;
+        // Filter only the cities, using fcodes
 
-      // Take the population from first element in the JSON array.
-      this.population = data.geonames[0].population;
+        if (fcode == "PPLC" || fcode == "PPLA" || fcode == "PPLA2") {
+          cities.push(data.geonames[i]);
+        }
+      }
+
+      if (cities.length == 0) {
+        throw new Error();
+      }
+
+      // Take the city and population from first element in the JSON array.
+
+      this.city = cities[0].name;
+      this.population = cities[0].population;
 
       // Navigate to population page with city and population parameter.
 
@@ -73,18 +71,18 @@ export default class City extends Component {
         population: this.population
       })
       this.setState({ loading: false });
-
     }
+
+
 
     catch (error) {
       this.setState({ loading: false })
       alert("Sorry, no city was found.");
       this.textInput.current.clear();
-  
+
     }
-    
+
   }
-  
 
   // Function to remove whitespaces, and make first letter capitalized, the rest to lower case. 
 
@@ -95,9 +93,9 @@ export default class City extends Component {
 
 
   render() {
-    
+
     return (
-      
+
       <View style={styles.container}>
 
         <View style={styles.picture}>
@@ -108,17 +106,17 @@ export default class City extends Component {
         </View>
         <Text style={customTextProps.style}>SEARCH BY CITY</Text>
         <TextInput
-          ref={ this.textInput }
+          ref={this.textInput}
           style={styles.input}
           placeholder='Enter a city'
           onChangeText={(val) => this.city = this.reformat(val)}
         />
         <TouchableOpacity
-        onPress={() => this.searchForCity()}>
-        <Image 
-        source={require('../assets/newsearch.png')} 
-        style={styles.roundButton} 
-        />
+          onPress={() => this.searchForCity()}>
+          <Image
+            source={require('../assets/newsearch.png')}
+            style={styles.roundButton}
+          />
         </TouchableOpacity>
         <Text /* Ugly solution to get some whitespace*/ > </Text>
         <ActivityIndicator animating={this.state.loading} color='#000000'></ActivityIndicator>

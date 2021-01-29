@@ -1,6 +1,5 @@
 import React, { Component, useState } from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
-import { LinearGradient } from 'expo'
 
 export default function threeBiggest({ navigation }) {
 

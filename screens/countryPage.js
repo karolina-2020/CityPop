@@ -62,7 +62,7 @@ export default class Country extends Component {
 
     }
 
-    //Async function to search for a country using its country code 
+    // Async function to search for a country using its country code 
 
     async searchForCountry(countryCode) {
         this.setState({ loading: true })
@@ -74,7 +74,7 @@ export default class Country extends Component {
         for (var i = 0; i < data.geonames.length; i++) {
             var fcode = data.geonames[i].fcode;
 
-            /* extract only the cities, using the fcodes */
+            // Filter only the cities, using the fcodes 
 
             if (fcode == "PPLC" || fcode == "PPLA" || fcode == "PPLA2" || fcode == "PPL") {
                 cities.push(data.geonames[i]);
@@ -112,7 +112,7 @@ export default class Country extends Component {
     }
 
 
-    // Function to remove whitespaces, and make first letter capitalized and the rest to lower case.
+    // Function to remove whitespaces, make first letter capitalized and the rest to lower case.
 
     reformat(str) {
 
@@ -138,7 +138,6 @@ export default class Country extends Component {
                     placeholder='Enter a country'
                     onChangeText={(val) => this.country = this.reformat(val)}
                 />
-
                 <TouchableOpacity
                     onPress={() => this.lookForCountryCode()}>
                     <Image
@@ -146,8 +145,9 @@ export default class Country extends Component {
                         style={styles.roundButton}
                     />
                 </TouchableOpacity>
-                
+
                 <Text /* Ugly solution to get some whitespace */> </Text>
+
                 <ActivityIndicator margin='100' animating={this.state.loading} color='#000000' ></ActivityIndicator>
             </View>
         );
